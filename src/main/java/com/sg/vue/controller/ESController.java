@@ -204,7 +204,7 @@ public class ESController {
         subQuery.should(matchPhraseQuery);
         mastQuery.must(subQuery);
 
-//        mastQuery.filter(QueryBuilders.termsQuery("flag", "10"));
+        mastQuery.filter(QueryBuilders.termsQuery("flag", "10"));
 //        mastQuery.filter(QueryBuilders.termsQuery("numbers", "1621069513074201"));
 
         sourceBuilder.query(mastQuery);
@@ -228,7 +228,8 @@ public class ESController {
         List<EsObj> arrayList = new ArrayList<>();
         for (SearchHit hit : searchHits) {
             EsObj user = JSON.parseObject(hit.getSourceAsString(), EsObj.class);
-            System.out.println(JSONObject.toJSONString(user));
+            log.info(JSONObject.toJSONString(user));
+
             arrayList.add(user);
         }
 
