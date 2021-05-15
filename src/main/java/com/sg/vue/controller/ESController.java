@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sg.vue.bean.EsObj;
 import com.sg.vue.bean.MyUser;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.index.IndexRequest;
@@ -32,6 +33,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @RestController
 @RequestMapping("/es")
 public class ESController {
@@ -206,22 +208,20 @@ public class ESController {
 //        mastQuery.filter(QueryBuilders.termsQuery("numbers", "1621069513074201"));
 
         sourceBuilder.query(mastQuery);
-
         sourceBuilder.from(0);
         sourceBuilder.size(10);
-
-        System.out.println(sourceBuilder);
+        log.info("source:{}", sourceBuilder);
 
         //设置ES索引和类型
         SearchRequest request = new SearchRequest(ES_INDEX);
         request.source(sourceBuilder);
+        log.info("SearchRequest:{}", request);
 
         SearchResponse response = restClient.search(request, RequestOptions.DEFAULT);
-
-        System.out.println(response);
+        log.info("SearchResponse:{}", response);
 
         SearchHits hits = response.getHits();
-        System.out.println("total:" + hits.getTotalHits().value);
+        log.info("total:{}", hits.getTotalHits().value);
 
         SearchHit[] searchHits = hits.getHits();
         List<EsObj> arrayList = new ArrayList<>();
