@@ -220,6 +220,7 @@ public class ESController {
         SearchResponse response = restClient.search(request, RequestOptions.DEFAULT);
         log.info("SearchResponse:{}", response);
 
+
         SearchHits hits = response.getHits();
         log.info("total:{}", hits.getTotalHits().value);
 
