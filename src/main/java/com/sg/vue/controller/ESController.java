@@ -23,6 +23,7 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -208,13 +209,25 @@ public class ESController {
 //        mastQuery.filter(QueryBuilders.termsQuery("numbers", "1621069513074201"));
 
         sourceBuilder.query(mastQuery);
+        // 默认为0
         sourceBuilder.from(0);
-        sourceBuilder.size(10);
+        sourceBuilder.size(20);
+        // 设置一个可选的超时，控制允许搜索的时间.
+        sourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
         log.info("source:{}", sourceBuilder);
 
+//        HighlightBuilder highlightBuilder = new HighlightBuilder();
+//        HighlightBuilder.Field highlightTitle =
+//                new HighlightBuilder.Field("name").preTags("<strong>").postTags("</strong>");
+//        highlightTitle.highlighterType("unified");
+//        highlightBuilder.field(highlightTitle);
+//        sourceBuilder.highlighter(highlightBuilder);
+
         //设置ES索引和类型
-        SearchRequest request = new SearchRequest(ES_INDEX);
+        SearchRequest request = new SearchRequest();
+        request.indices(ES_INDEX);
         request.source(sourceBuilder);
+//        request.routing("flag");
         log.info("SearchRequest:{}", request);
 
         SearchResponse response = restClient.search(request, RequestOptions.DEFAULT);
