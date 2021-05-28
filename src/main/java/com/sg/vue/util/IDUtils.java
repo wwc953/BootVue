@@ -1,12 +1,13 @@
 package com.sg.vue.util;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
@@ -72,6 +73,21 @@ public class IDUtils {
                 if (queue.isEmpty()) {
                     if (pendingQueue.isEmpty()) {
 
+                        if (initial) {
+                            asyncTime = (Long) Optional.ofNullable(cache.hgetObj(key, typeString, "async_time")).orElse(0L);
+                            Map map = JSON.parseObject(JSONObject.toJSONString(st), Map.class);
+                            if (ishex) {
+                                map.put("hex", "1");
+                            }
+                            rs = (Long) Optional.of(null).get();
+                            log.info("等待队列为空，已初始化，直接降级为从发号器获取，知道服务恢复,ids={}", rs);
+                            long nowTime = System.currentTimeMillis();
+                            if (asyncTime != 0L && nowTime - asyncTime > retryTime) {
+                                //TODO doRetry
+                            }
+                            return rs;
+                        }
+
                         log.info("等待队列为空，未初始化，从缓存队列中获取。策略编号：{}", stNo);
                         try {
                             if (pendingQueue.isEmpty()) {
@@ -117,7 +133,7 @@ public class IDUtils {
                 Long asyncTime1 = (Long) Optional.ofNullable(cache.hgetObj(key, typeString, "asyncTime")).orElse(0L);
                 long nowTime = System.currentTimeMillis();
                 if (asyncTime != 0L && nowTime - asyncTime > retryTime) {
-
+                    //TODO doRetry
                 }
                 return rs;
             }
@@ -181,7 +197,7 @@ public class IDUtils {
      * @return
      */
     private Map getPendingMapWithFeign(NumberStrategy st, boolean isHex) {
-        Map param = new HashMap<>();
+        Map param = JSON.parseObject(JSONObject.toJSONString(st), Map.class);
         if (isHex) {
             param.put("hex", "1");
         }
