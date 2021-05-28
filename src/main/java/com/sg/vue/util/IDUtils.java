@@ -20,20 +20,12 @@ import java.util.concurrent.Executors;
 @Component
 public class IDUtils {
 
-    /**
-     * 补0
-     *
-     * @param st
-     * @param fullWithZero
-     * @param isBatch
-     * @param isHex
-     * @return
-     */
-    public String generateId(NumberStrategy st, boolean fullWithZero, boolean isBatch, boolean isHex) {
+    public String generateid(NumberStrategy st, boolean fullWithZero, boolean isBatch, boolean isHex) {
         if (isBatch) {
             return "{0}";
         } else {
-            long id = this.generateId(st, isHex);
+            // db获取id
+            long id = generateId(st, isHex);
             String idstr = String.valueOf(id);
             if (isHex) idstr = Long.toHexString(id);
             return fullWithZero ? processDigit(st.getNoLength().intValue(), idstr) : idstr;
