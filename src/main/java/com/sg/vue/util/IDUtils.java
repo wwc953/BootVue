@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Slf4j
+@Component
 public class IDUtils {
 
     public String generateid(NumberStrategy st, boolean fullWithZero, boolean isBatch, boolean isHex) {
@@ -51,9 +53,16 @@ public class IDUtils {
     @Value("${init.retry.time:300000}")
     int retryTime;
 
+    @Autowired
     SignerFeign feign;
 
     Executor threadPool = Executors.newCachedThreadPool();
+
+    public static final String NOW_QUEUE_FIELD = "now";
+    public static final String THRESHOLD_FIELD = "threshold";
+    public static final String PENDING_QUEUE_FIELD = "pending";
+    public static final String INITIAL_FIELD = "initialFlag";
+    public static final String ASYNC_TIME_FIELD = "async_time";
 
     public Long generateId(NumberStrategy st, boolean ishex) {
         String generateType = st.getGenType();
@@ -72,16 +81,16 @@ public class IDUtils {
                 Object check = cache.hget(key, typeString);
                 if (check == null) cache.del(key);
 
-                Boolean initial = (Boolean) Optional.ofNullable(cache.hgetObj(key, typeString, "initialFlag")).orElse(false);
-                LinkedList<Long> queue = cache.hgetObj(key, typeString, "now") == null ? new LinkedList<>() : (LinkedList) cache.hgetObj(key, typeString, "now");
-                ConcurrentLinkedQueue<Map> pendingQueue = cache.hgetObj(key, typeString, "pending") == null ? new ConcurrentLinkedQueue<>() : (ConcurrentLinkedQueue) cache.hgetObj(key, typeString, "pending");
+                Boolean initial = (Boolean) Optional.ofNullable(cache.hgetObj(key, typeString, INITIAL_FIELD)).orElse(false);
+                LinkedList<Long> queue = cache.hgetObj(key, typeString, NOW_QUEUE_FIELD) == null ? new LinkedList<>() : (LinkedList) cache.hgetObj(key, typeString, NOW_QUEUE_FIELD);
+                ConcurrentLinkedQueue<Map> pendingQueue = cache.hgetObj(key, typeString, PENDING_QUEUE_FIELD) == null ? new ConcurrentLinkedQueue<>() : (ConcurrentLinkedQueue) cache.hgetObj(key, typeString, PENDING_QUEUE_FIELD);
                 Long rs = null;
                 Long asyncTime;
                 if (queue.isEmpty()) {
                     if (pendingQueue.isEmpty()) {
 
                         if (initial) {
-                            asyncTime = (Long) Optional.ofNullable(cache.hgetObj(key, typeString, "async_time")).orElse(0L);
+                            asyncTime = (Long) Optional.ofNullable(cache.hgetObj(key, typeString, ASYNC_TIME_FIELD)).orElse(0L);
                             Map map = JSON.parseObject(JSONObject.toJSONString(st), Map.class);
                             if (ishex) {
                                 map.put("hex", "1");
@@ -103,26 +112,26 @@ public class IDUtils {
                         try {
                             if (pendingQueue.isEmpty()) {
                                 pendingQueue.offer(null);
-                                cache.hset(key, typeString, "pending", pendingQueue);
+                                cache.hset(key, typeString, PENDING_QUEUE_FIELD, pendingQueue);
                             }
                         } catch (Exception e) {
                             throw new RuntimeException("从算号器服务获取ID失败", e);
                         }
 
                         initial = true;
-                        cache.hset(key, typeString, "initialFlag", initial);
+                        cache.hset(key, typeString, INITIAL_FIELD, initial);
 
                     }
 
                     Map dataMap = pendingQueue.poll();
                     log.info("取出第二缓存号段：{}，策略编号：{}", dataMap, stNo);
                     queue = convertMapToQueue(dataMap);
-                    cache.hset(key, typeString, "now", queue);
-                    cache.hset(key, typeString, "threshold", calcThresHold(queue));
+                    cache.hset(key, typeString, NOW_QUEUE_FIELD, queue);
+                    cache.hset(key, typeString, THRESHOLD_FIELD, calcThresHold(queue));
                 }
 
                 rs = queue.poll();
-                asyncTime = (Long) cache.hgetObj(key, typeString, "threshold");
+                asyncTime = (Long) cache.hgetObj(key, typeString, THRESHOLD_FIELD);
                 if (rs.equals(asyncTime)) {
                     log.info("触发阈值，异步缓存第二段队列：策略编号：{}，阈值：{}", stNo, asyncTime);
                     String finalTypeString = typeString;
@@ -134,7 +143,7 @@ public class IDUtils {
                                 log.info("异步缓存结果，pendingQueue：{},策略编号：{}", pendingQueue, stNo);
                             } catch (Exception e) {
                                 log.info("异步缓存出错，纪录时间,策略编号：{}", stNo);
-                                cache.hset(key, finalTypeString, "async_time", System.currentTimeMillis());
+                                cache.hset(key, finalTypeString, ASYNC_TIME_FIELD, System.currentTimeMillis());
                             }
 
                         }
@@ -162,10 +171,10 @@ public class IDUtils {
         try {
             pendingQueue.offer(getPendingMapWithFeign(st, ishex));
             log.info("异步缓存结果，pendingQueue：{}", pendingQueue);
-            cache.hset(key, typeString, "async_time", 0);
+            cache.hset(key, typeString, ASYNC_TIME_FIELD, 0);
         } catch (Exception e) {
             log.info("异步缓存出错，更新时间,策略编号：{}", st.getStNo());
-            cache.hset(key, typeString, "async_time", System.currentTimeMillis());
+            cache.hset(key, typeString, ASYNC_TIME_FIELD, System.currentTimeMillis());
         }
 
     }
@@ -230,7 +239,9 @@ public class IDUtils {
         if (isHex) {
             param.put("hex", "1");
         }
-        return null;
+        String rsdata = (String) Optional.of(feign.batchGenerateId(param)).get();
+        Map rsMap = JSON.parseObject(rsdata, Map.class);
+        return rsMap;
     }
 
 
