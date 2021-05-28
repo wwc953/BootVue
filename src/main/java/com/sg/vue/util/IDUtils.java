@@ -77,13 +77,38 @@ public class IDUtils {
                             throw new RuntimeException("从算号器服务获取ID失败", e);
                         }
 
+                        initial = true;
+                        cache.hset(key, typeString, "initialFlag", initial);
 
                     }
+
+                    Map dataMap = pendingQueue.poll();
+                    log.info("取出第二缓存号段：{}，策略编号：{}", dataMap, stNo);
+                    queue = convertMapToQueue(dataMap);
+                    cache.hset(key, typeString, "now", queue);
+                    cache.hset(key, typeString, "threshold", calcThresHold(queue));
                 }
             }
         }
 
         return initLong;
+    }
+
+    private LinkedList<Long> convertMapToQueue(Map dataMap) {
+        Long currentId = Long.valueOf((String) dataMap.get("currentId"));
+        Long maxId = Long.valueOf((String) dataMap.get("maxId"));
+        Long stepInRs = Long.valueOf((String) dataMap.get("step"));
+        LinkedList<Long> rsList = new LinkedList<>();
+
+        for (Long i = currentId; i <= maxId; i = i + stepInRs) {
+            rsList.offer(i);
+        }
+        return rsList;
+    }
+
+    private Long calcThresHold(LinkedList<Long> queue) {
+        int thresHoldIndex = queue.size() / 5 - 1;
+        return queue.get(thresHoldIndex);
     }
 
     public String transformType(String generateType) {
