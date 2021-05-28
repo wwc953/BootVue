@@ -2,6 +2,7 @@ package com.sg.vue.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +43,9 @@ public class IDUtils {
 
     @Autowired
     CaffeineCache cache;
+
+    @Value("${init.retry.time:300000}")
+    int retryTime;
 
     public Long generateId(NumberStrategy st, boolean ishex) {
         Long initLong = 0L;
@@ -88,10 +92,23 @@ public class IDUtils {
                     cache.hset(key, typeString, "now", queue);
                     cache.hset(key, typeString, "threshold", calcThresHold(queue));
                 }
+
+                rs = queue.poll();
+                asyncTime = (Long) cache.hgetObj(key, typeString, "threshold");
+                if (rs.equals(asyncTime)) {
+                    log.info("触发阈值，异步缓存第二段队列：策略编号：{}，阈值：{}", stNo, asyncTime);
+                    //
+                }
+
+                Long asyncTime1 = (Long) Optional.ofNullable(cache.hgetObj(key, typeString, "asyncTime")).orElse(0L);
+                long nowTime = System.currentTimeMillis();
+                if (asyncTime != 0L && nowTime - asyncTime > retryTime) {
+
+                }
+                return rs;
             }
         }
 
-        return initLong;
     }
 
     private LinkedList<Long> convertMapToQueue(Map dataMap) {
