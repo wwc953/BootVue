@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
@@ -97,7 +98,20 @@ public class IDUtils {
                 asyncTime = (Long) cache.hgetObj(key, typeString, "threshold");
                 if (rs.equals(asyncTime)) {
                     log.info("触发阈值，异步缓存第二段队列：策略编号：{}，阈值：{}", stNo, asyncTime);
-                    //
+                    String finalTypeString = typeString;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                pendingQueue.offer(getPendingMapWithFeign(st, ishex));
+                                log.info("异步缓存结果，pendingQueue：{},策略编号：{}", pendingQueue, stNo);
+                            } catch (Exception e) {
+                                log.info("异步缓存出错，纪录时间,策略编号：{}", stNo);
+                                cache.hset(key, finalTypeString, "async_time", System.currentTimeMillis());
+                            }
+
+                        }
+                    }).start();
                 }
 
                 Long asyncTime1 = (Long) Optional.ofNullable(cache.hgetObj(key, typeString, "asyncTime")).orElse(0L);
@@ -160,5 +174,19 @@ public class IDUtils {
         }
 
     }
+
+    /**
+     * db获取主键值
+     *
+     * @return
+     */
+    private Map getPendingMapWithFeign(NumberStrategy st, boolean isHex) {
+        Map param = new HashMap<>();
+        if (isHex) {
+            param.put("hex", "1");
+        }
+        return null;
+    }
+
 
 }
