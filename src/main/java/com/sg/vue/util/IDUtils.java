@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class IDUtils {
@@ -49,6 +51,8 @@ public class IDUtils {
     @Value("${init.retry.time:300000}")
     int retryTime;
 
+    Executor threadPool = Executors.newCachedThreadPool();
+
     public Long generateId(NumberStrategy st, boolean ishex) {
         Long initLong = 0L;
 
@@ -84,6 +88,10 @@ public class IDUtils {
                             long nowTime = System.currentTimeMillis();
                             if (asyncTime != 0L && nowTime - asyncTime > retryTime) {
                                 //TODO doRetry
+                                String finalTypeString1 = typeString;
+                                threadPool.execute(() -> {
+                                    doRetry(key, finalTypeString1, pendingQueue, st, ishex);
+                                });
                             }
                             return rs;
                         }
@@ -134,9 +142,27 @@ public class IDUtils {
                 long nowTime = System.currentTimeMillis();
                 if (asyncTime != 0L && nowTime - asyncTime > retryTime) {
                     //TODO doRetry
+                    String finalTypeString1 = typeString;
+                    threadPool.execute(() -> {
+                        doRetry(key, finalTypeString1, pendingQueue, st, ishex);
+                    });
                 }
                 return rs;
             }
+        }
+
+    }
+
+
+    private void doRetry(String key, String typeString, ConcurrentLinkedQueue<Map> pendingQueue, NumberStrategy st, boolean ishex) {
+        log.info("达到重试时间，重新从服务拉取数据");
+        try {
+            pendingQueue.offer(getPendingMapWithFeign(st, ishex));
+            log.info("异步缓存结果，pendingQueue：{}", pendingQueue);
+            cache.hset(key, typeString, "async_time", 0);
+        } catch (Exception e) {
+            log.info("异步缓存出错，更新时间,策略编号：{}", st.getStNo());
+            cache.hset(key, typeString, "async_time", System.currentTimeMillis());
         }
 
     }
