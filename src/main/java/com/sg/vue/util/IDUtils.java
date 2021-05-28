@@ -51,17 +51,20 @@ public class IDUtils {
     @Value("${init.retry.time:300000}")
     int retryTime;
 
+    SignerFeign feign;
+
     Executor threadPool = Executors.newCachedThreadPool();
 
     public Long generateId(NumberStrategy st, boolean ishex) {
-        Long initLong = 0L;
-
         String generateType = st.getGenType();
         Long noLength = st.getNoLength();
         String stNo = st.getStNo();
         String typeString = null;
         if (noLength < 5L) {
-            return initLong;
+            Map map = JSON.parseObject(JSONObject.toJSONString(st), Map.class);
+            if (ishex) map.put("hex", "1");
+            Long id = (Long) Optional.of(feign.generateId(map)).get();
+            return id;
         } else {
             typeString = transformType(generateType);
             String key = "NUMBER_ID_" + stNo;
@@ -83,7 +86,7 @@ public class IDUtils {
                             if (ishex) {
                                 map.put("hex", "1");
                             }
-                            rs = (Long) Optional.of(null).get();
+                            rs = (Long) Optional.of(feign.generateId(map)).get();
                             log.info("等待队列为空，已初始化，直接降级为从发号器获取，知道服务恢复,ids={}", rs);
                             long nowTime = System.currentTimeMillis();
                             if (asyncTime != 0L && nowTime - asyncTime > retryTime) {
