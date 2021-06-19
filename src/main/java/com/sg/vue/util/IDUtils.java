@@ -12,10 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
+@SuppressWarnings({"ALL", "AlibabaThreadPoolCreation"})
 @Slf4j
 @Component
 public class IDUtils {
@@ -27,7 +26,9 @@ public class IDUtils {
             // db获取id
             long id = generateId(st, isHex);
             String idstr = String.valueOf(id);
-            if (isHex) idstr = Long.toHexString(id);
+            if (isHex) {
+                idstr = Long.toHexString(id);
+            }
             return fullWithZero ? processDigit(st.getNoLength().intValue(), idstr) : idstr;
         }
 
@@ -56,7 +57,7 @@ public class IDUtils {
     @Autowired
     SignerFeign feign;
 
-    Executor threadPool = Executors.newCachedThreadPool();
+    Executor threadPool = new ThreadPoolExecutor(4, 8, 1, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
 
     public static final String NOW_QUEUE_FIELD = "now";
     public static final String THRESHOLD_FIELD = "threshold";
@@ -71,7 +72,9 @@ public class IDUtils {
         String typeString = null;
         if (noLength < 5L) {
             Map map = JSON.parseObject(JSONObject.toJSONString(st), Map.class);
-            if (ishex) map.put("hex", "1");
+            if (ishex) {
+                map.put("hex", "1");
+            }
             Long id = (Long) Optional.of(feign.generateId(map)).get();
             return id;
         } else {
@@ -79,7 +82,9 @@ public class IDUtils {
             String key = "NUMBER_ID_" + stNo;
             synchronized (st) {
                 Object check = cache.hget(key, typeString);
-                if (check == null) cache.del(key);
+                if (check == null) {
+                    cache.del(key);
+                }
 
                 Boolean initial = (Boolean) Optional.ofNullable(cache.hgetObj(key, typeString, INITIAL_FIELD)).orElse(false);
                 LinkedList<Long> queue = cache.hgetObj(key, typeString, NOW_QUEUE_FIELD) == null ? new LinkedList<>() : (LinkedList) cache.hgetObj(key, typeString, NOW_QUEUE_FIELD);

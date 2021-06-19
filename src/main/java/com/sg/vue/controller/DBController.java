@@ -2,7 +2,6 @@ package com.sg.vue.controller;
 
 import com.sg.vue.bean.MyUser;
 import com.sg.vue.dao.MyUserMapper;
-import org.apache.http.impl.cookie.DateUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

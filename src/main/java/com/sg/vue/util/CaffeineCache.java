@@ -79,10 +79,10 @@ public class CaffeineCache {
         HashMap itemMap;
         if (map != null) {
             itemMap = (HashMap) map.get(key);
-            if (itemMap != null){
-                itemMap.put(option,value);
-            }else {
-                itemMap=new HashMap();
+            if (itemMap != null) {
+                itemMap.put(option, value);
+            } else {
+                itemMap = new HashMap();
                 itemMap.put(option, value);
                 map.put(item, itemMap);
             }
@@ -111,8 +111,9 @@ public class CaffeineCache {
     }
 
     public void hdel(String key, String[] items) {
-        if (items == null || items.length == 0)
+        if (items == null || items.length == 0) {
             return;
+        }
         Map map = (Map) cache.getIfPresent(key);
         for (int i = 0; i < items.length; i++) {
             map.remove(items[i]);
