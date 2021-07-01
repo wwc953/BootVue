@@ -1,11 +1,13 @@
 package com.sg.vue.converter;
 
 import com.sg.vue.converter.annotion.EnableUserInfoTransform;
+import com.sg.vue.converter.annotion.TransfCode;
 import com.sg.vue.converter.annotion.TransformMethod;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.beans.IntrospectionException;
@@ -13,11 +15,10 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class MyConverter extends MappingJackson2HttpMessageConverter {
@@ -142,9 +143,60 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
     }
 
     private void dataObjectHandler(Object data, List<TransformMethod> methodList, boolean isArray) {
+        if (isArray) {
+            List<Object> list = (List<Object>) data;
+            list.forEach(obj -> {
+                dataSingleHandler(data, methodList);
+            });
+        } else {
+            dataSingleHandler(data, methodList);
+        }
+    }
+
+    private void dataSingleHandler(Object obj, List<TransformMethod> methodList) {
+        methodList.forEach(me -> {
+            try {
+                if (me.getReadMethod().invoke(obj) != null) {
+                    String sourceValue = String.valueOf(me.getReadMethod().invoke(obj));
+                    String writeValue = sourceValue;
+                    if (!StringUtils.isEmpty(me.getCodeCls())) {
+//                        writeValue=StCodeUtil.getCodeName(me.getCodeCls(),writeValue);
+                    }
+                    me.getReadMethod().invoke(obj, writeValue);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void getMethods(List<Field> fds, List<TransformMethod> methodList, Class clazz) {
+        fds.forEach(k -> {
+            try {
+                TransfCode code = k.getAnnotation(TransfCode.class);
+                String sourceName = "";
+                String codeCls = "";
+                Set<String> annoSet = new HashSet<>();
+                if (code != null) {
+                    sourceName = code.valueFrom();
+                    codeCls = code.codeType();
+                    annoSet.add(TransfCode.class.getName());
+                }
+                String targetName = k.getName();
+                if (!StringUtils.isEmpty(targetName) && !StringUtils.isEmpty(targetName)) {
+                    PropertyDescriptor sourceDescriptor = new PropertyDescriptor(sourceName, clazz);
+                    PropertyDescriptor targetDescriptor = new PropertyDescriptor(targetName, clazz);
+                    Method writeMethod = targetDescriptor.getWriteMethod();
+                    Method readMethod = sourceDescriptor.getReadMethod();
+                    TransformMethod tm = new TransformMethod(readMethod, writeMethod, codeCls, annoSet);
+                    methodList.add(tm);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
 }
