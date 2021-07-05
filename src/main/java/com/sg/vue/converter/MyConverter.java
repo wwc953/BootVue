@@ -146,7 +146,7 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
         if (isArray) {
             List<Object> list = (List<Object>) data;
             list.forEach(obj -> {
-                dataSingleHandler(data, methodList);
+                dataSingleHandler(obj, methodList);
             });
         } else {
             dataSingleHandler(data, methodList);
