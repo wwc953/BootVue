@@ -76,7 +76,7 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
         Class tempClass = clazz.getSuperclass();
         while (tempClass != null) {
             fds.addAll(Arrays.asList(tempClass.getDeclaredFields()));
-            tempClass = clazz.getSuperclass();
+            tempClass = tempClass.getSuperclass();
         }
         try {
             ResponseResult<Object> res = (ResponseResult) object;
@@ -161,8 +161,9 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
                     String writeValue = sourceValue;
                     if (!StringUtils.isEmpty(me.getCodeCls())) {
 //                        writeValue=StCodeUtil.getCodeName(me.getCodeCls(),writeValue);
+                        writeValue = "ttttt";
                     }
-                    me.getReadMethod().invoke(obj, writeValue);
+                    me.getWriteMethod().invoke(obj, StringUtils.isEmpty(writeValue) ? sourceValue : writeValue);
                 }
 
             } catch (Exception e) {
@@ -184,7 +185,7 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
                     annoSet.add(TransfCode.class.getName());
                 }
                 String targetName = k.getName();
-                if (!StringUtils.isEmpty(targetName) && !StringUtils.isEmpty(targetName)) {
+                if (!StringUtils.isEmpty(sourceName) && !StringUtils.isEmpty(targetName)) {
                     PropertyDescriptor sourceDescriptor = new PropertyDescriptor(sourceName, clazz);
                     PropertyDescriptor targetDescriptor = new PropertyDescriptor(targetName, clazz);
                     Method writeMethod = targetDescriptor.getWriteMethod();
