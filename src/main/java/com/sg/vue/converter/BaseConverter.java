@@ -20,8 +20,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
-@Component
-public class MyConverter extends MappingJackson2HttpMessageConverter {
+public abstract class BaseConverter extends MappingJackson2HttpMessageConverter {
 
     @Override
     protected void writeInternal(Object object, Type type, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
@@ -159,10 +158,11 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
                 if (me.getReadMethod().invoke(obj) != null) {
                     String sourceValue = String.valueOf(me.getReadMethod().invoke(obj));
                     String writeValue = sourceValue;
-                    if (!StringUtils.isEmpty(me.getCodeCls())) {
-//                        writeValue=StCodeUtil.getCodeName(me.getCodeCls(),writeValue);
-                        writeValue = "ttttt";
-                    }
+//                    if (!StringUtils.isEmpty(me.getCodeCls())) {
+////                        writeValue=StCodeUtil.getCodeName(me.getCodeCls(),writeValue);
+//                        writeValue = "ttttt";
+//                    }
+                    writeValue = getRelaValue(me.getAnnotationType(),me.getCodeCls(), sourceValue);
                     me.getWriteMethod().invoke(obj, StringUtils.isEmpty(writeValue) ? sourceValue : writeValue);
                 }
 
@@ -171,6 +171,15 @@ public class MyConverter extends MappingJackson2HttpMessageConverter {
             }
         });
     }
+
+    /**
+     * 重写获取真实值的方法
+     * @param annotationType 注解类型
+     * @param codeCls 类型
+     * @param sourceValue 码值
+     * @return
+     */
+    protected abstract String getRelaValue(Set<String> annotationType, String codeCls, String sourceValue);
 
     private void getMethods(List<Field> fds, List<TransformMethod> methodList, Class clazz) {
         fds.forEach(k -> {
