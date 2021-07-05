@@ -2,6 +2,7 @@ package com.sg.vue.converter;
 
 import com.sg.vue.converter.annotion.EnableUserInfoTransform;
 import com.sg.vue.converter.annotion.TransfCode;
+import com.sg.vue.converter.annotion.TransfUser;
 import com.sg.vue.converter.annotion.TransformMethod;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -157,12 +158,7 @@ public abstract class BaseConverter extends MappingJackson2HttpMessageConverter 
             try {
                 if (me.getReadMethod().invoke(obj) != null) {
                     String sourceValue = String.valueOf(me.getReadMethod().invoke(obj));
-                    String writeValue = sourceValue;
-//                    if (!StringUtils.isEmpty(me.getCodeCls())) {
-////                        writeValue=StCodeUtil.getCodeName(me.getCodeCls(),writeValue);
-//                        writeValue = "ttttt";
-//                    }
-                    writeValue = getRelaValue(me.getAnnotationType(),me.getCodeCls(), sourceValue);
+                    String writeValue = getRelaValue(me.getAnnotationType(), me.getCodeCls(), sourceValue);
                     me.getWriteMethod().invoke(obj, StringUtils.isEmpty(writeValue) ? sourceValue : writeValue);
                 }
 
@@ -174,9 +170,10 @@ public abstract class BaseConverter extends MappingJackson2HttpMessageConverter 
 
     /**
      * 重写获取真实值的方法
+     *
      * @param annotationType 注解类型
-     * @param codeCls 类型
-     * @param sourceValue 码值
+     * @param codeCls        类型
+     * @param sourceValue    码值
      * @return
      */
     protected abstract String getRelaValue(Set<String> annotationType, String codeCls, String sourceValue);
@@ -185,9 +182,15 @@ public abstract class BaseConverter extends MappingJackson2HttpMessageConverter 
         fds.forEach(k -> {
             try {
                 TransfCode code = k.getAnnotation(TransfCode.class);
+                TransfUser user = k.getAnnotation(TransfUser.class);
                 String sourceName = "";
                 String codeCls = "";
                 Set<String> annoSet = new HashSet<>();
+
+                if (user != null) {
+                    sourceName = user.valueFrom();
+                    annoSet.add(TransfUser.class.getName());
+                }
                 if (code != null) {
                     sourceName = code.valueFrom();
                     codeCls = code.codeType();
