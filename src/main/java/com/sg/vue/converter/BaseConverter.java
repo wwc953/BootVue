@@ -34,9 +34,11 @@ public abstract class BaseConverter extends MappingJackson2HttpMessageConverter 
     }
 
     private void beforeWriternal(Object object, Type type, Boolean flag) {
+        System.out.println("beforeWriternal type：" + type.getClass().getName());
         if (type != null && ParameterizedTypeImpl.class.getName().equals(type.getClass().getName())) {
             ParameterizedType tp = (ParameterizedType) type;
             Type[] types = tp.getActualTypeArguments();
+            // getRawType 标识原始类
             if (types.length > 0 && ResponseResult.class.getName().equals(tp.getRawType().getTypeName())) {
                 String name = types[0].getClass().getName();
                 if (ParameterizedTypeImpl.class.getName().equals(name)) {
