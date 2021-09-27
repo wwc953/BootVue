@@ -1,6 +1,6 @@
 package com.sg.vue.dao;
 
-import com.sg.vue.bean.MyUser;
+import com.sg.vue.model.dto.MyUser;
 
 public interface MyUserMapper {
     int deleteByPrimaryKey(Integer id);

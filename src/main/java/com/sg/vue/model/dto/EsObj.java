@@ -1,4 +1,4 @@
-package com.sg.vue.bean;
+package com.sg.vue.model.dto;
 
 import java.io.Serializable;
 import java.util.List;

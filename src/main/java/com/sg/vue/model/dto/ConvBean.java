@@ -1,4 +1,4 @@
-package com.sg.vue.bean;
+package com.sg.vue.model.dto;
 
 import com.sg.vue.converter.annotion.EnableUserInfoTransform;
 import com.sg.vue.converter.annotion.TransfCode;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sg.vue.dao.MyUserMapper" >
-  <resultMap id="BaseResultMap" type="com.sg.vue.bean.MyUser" >
+  <resultMap id="BaseResultMap" type="com.sg.vue.model.dto.MyUser" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -21,13 +21,13 @@
     delete from my_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.sg.vue.bean.MyUser" >
+  <insert id="insert" parameterType="com.sg.vue.model.dto.MyUser" >
     insert into my_user (id, flag, name, 
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{flag,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.sg.vue.bean.MyUser" >
+  <insert id="insertSelective" parameterType="com.sg.vue.model.dto.MyUser" >
     insert into my_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sg.vue.bean.MyUser" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.sg.vue.model.dto.MyUser" >
     update my_user
     <set >
       <if test="flag != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.sg.vue.bean.MyUser" >
+  <update id="updateByPrimaryKey" parameterType="com.sg.vue.model.dto.MyUser" >
     update my_user
     set flag = #{flag,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},

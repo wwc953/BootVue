@@ -1,7 +1,7 @@
 package com.sg.vue.controller;
 
-import com.sg.vue.bean.ConvBean;
-import com.sg.vue.bean.User;
+import com.sg.vue.model.dto.ConvBean;
+import com.sg.vue.model.dto.User;
 import com.sg.vue.converter.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
