@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Set;
 
-@Component
+//@Component
 public class My extends BaseConverter {
 
     @Override
