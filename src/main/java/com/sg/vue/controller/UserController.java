@@ -21,7 +21,6 @@ public class UserController {
 
     @PostMapping("/queryUserList")
     public Map queryUserList(@RequestBody PeopleQueryAO queryAO) {
-        log.info("saveUser...{}", JSON.toJSONString(queryAO));
         Map reult = new HashMap<>();
         reult.put("list", userService.queryUserList(queryAO));
         reult.put("total", userService.queryUserListCount(queryAO));
@@ -30,13 +29,11 @@ public class UserController {
 
     @PostMapping(value = "/saveUser")
     public Integer saveUser(@RequestBody People people) {
-        log.info("saveUser...{}", JSON.toJSONString(people));
         return userService.saveUser(people);
     }
 
     @PostMapping(value = "/delUser")
     public Integer delUser(@RequestBody People people) {
-        log.info("delUser...{}", JSON.toJSONString(people));
         return userService.delUser(people);
     }
 

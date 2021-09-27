@@ -24,11 +24,11 @@
     <select id="queryUserList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from people
+        from people where flag='01'
     </select>
 
     <select id="queryUserListCount" resultType="java.lang.Long">
-        select count(1) from people
+        select count(1) from people where flag='01'
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
