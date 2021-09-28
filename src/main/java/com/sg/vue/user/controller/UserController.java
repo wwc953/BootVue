@@ -1,8 +1,11 @@
 package com.sg.vue.user.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;
 import com.sg.vue.user.service.UserServiceImpl;
+import com.sg.vue.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,15 @@ public class UserController {
     @PostMapping(value = "/delUser")
     public Integer delUser(@RequestBody People people) {
         return userService.delUser(people);
+    }
+
+    @PostMapping("/login")
+    public JSONObject login(@RequestBody People people) {
+        JSONObject result = new JSONObject();
+        People people1 = userService.queryPeople(people);
+        result.put("userInfo", people1);
+        result.put("token", TokenUtils.getToken());
+        return result;
     }
 
 }

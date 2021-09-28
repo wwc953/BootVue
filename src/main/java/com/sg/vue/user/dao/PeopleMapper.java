@@ -8,13 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface PeopleMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(People record);
-
     int insertSelective(People record);
 
-    People selectByPrimaryKey(Integer id);
+    People queryPeople(People people);
 
     int updateByPrimaryKeySelective(People record);
 
