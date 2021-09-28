@@ -1,9 +1,8 @@
-package com.sg.vue.controller;
+package com.sg.vue.user.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.sg.vue.model.ao.PeopleQueryAO;
-import com.sg.vue.model.dto.People;
-import com.sg.vue.service.UserServiceImpl;
+import com.sg.vue.user.model.PeopleQueryAO;
+import com.sg.vue.user.model.People;
+import com.sg.vue.user.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

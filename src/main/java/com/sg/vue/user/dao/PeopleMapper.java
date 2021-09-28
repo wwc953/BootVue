@@ -1,10 +1,12 @@
-package com.sg.vue.dao;
+package com.sg.vue.user.dao;
 
-import com.sg.vue.model.ao.PeopleQueryAO;
-import com.sg.vue.model.dto.People;
+import com.sg.vue.user.model.PeopleQueryAO;
+import com.sg.vue.user.model.People;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface PeopleMapper {
     int deleteByPrimaryKey(Integer id);
 

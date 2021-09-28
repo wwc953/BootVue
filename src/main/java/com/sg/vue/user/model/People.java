@@ -1,4 +1,4 @@
-package com.sg.vue.model.dto;
+package com.sg.vue.user.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;

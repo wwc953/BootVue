@@ -1,11 +1,11 @@
-package com.sg.vue.service;
+package com.sg.vue.user.service;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.sg.vue.model.ao.PeopleQueryAO;
-import com.sg.vue.model.dto.People;
-import com.sg.vue.dao.PeopleMapper;
+import com.sg.vue.user.model.PeopleQueryAO;
+import com.sg.vue.user.model.People;
+import com.sg.vue.user.dao.PeopleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
