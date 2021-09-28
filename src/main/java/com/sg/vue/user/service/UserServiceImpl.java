@@ -39,6 +39,7 @@ public class UserServiceImpl {
         try {
             String decrypt = RSAUtil.decrypt(people.getPassword(), RSAUtil.DEFAUT_PrivateKey);
             String md5DigestAsHex = DigestUtils.md5DigestAsHex(decrypt.getBytes());
+            log.info("md5DigestAsHex....{}",md5DigestAsHex);
             people.setPassword(md5DigestAsHex);
         } catch (Exception e) {
             log.error("用户密码解密失败");
