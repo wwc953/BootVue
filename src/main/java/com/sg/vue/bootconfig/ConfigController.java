@@ -21,4 +21,9 @@ public class ConfigController {
     public ResponseResult queryConfigBuType(@RequestBody BootConfig config) {
         return ResponseResult.success(configService.queryConfigBuType(config));
     }
+
+    @PostMapping("/refreshCache")
+    public ResponseResult refreshCache(@RequestBody BootConfig config) {
+        return  configService.refreshCache(config) ;
+    }
 }
