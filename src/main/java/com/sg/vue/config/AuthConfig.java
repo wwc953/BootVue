@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
 
@@ -16,7 +18,8 @@ public class AuthConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(initAuthInterceptor()).addPathPatterns("/user/**").excludePathPatterns("/login/**");
-        registry.addInterceptor(initAuthInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
+        registry.addInterceptor(initAuthInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns(Arrays.asList("/user/login","/config/**"));
     }
 }

@@ -13,5 +13,9 @@ public interface BootCodes {
      * 未登录
      */
     public static String nologincode = "90000";
+    /**
+     * 本地缓存配置文件 key
+     */
+    public static String config_cach_key = "config";
 
 }
