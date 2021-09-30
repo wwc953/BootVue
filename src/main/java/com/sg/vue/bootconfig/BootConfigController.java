@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/config")
-public class ConfigController {
+public class BootConfigController {
 
     @Resource
     BootConfigServiceImpl configService;
