@@ -32,6 +32,11 @@
     </where>
   </select>
 
+
+  <select id="initConfigTypes" resultType="java.util.Map">
+    select distinct config_type "value",des "label" from boot_config
+  </select>
+
   <insert id="insertSelective" parameterType="com.sg.vue.bootconfig.BootConfig" >
     insert into boot_config
     <trim prefix="(" suffix=")" suffixOverrides="," >

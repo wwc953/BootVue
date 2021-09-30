@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -27,6 +28,9 @@ public class BootConfigServiceImpl {
         return configMapper.selectConfig(config);
     }
 
+    /**
+     * 刷新本地缓存
+     */
     public void reflushAllConfigCache() {
         caffeineCache.del(BootCodes.config_cach_key);
         BootConfig param = new BootConfig();
@@ -65,5 +69,11 @@ public class BootConfigServiceImpl {
             result = configMapper.updateByPrimaryKeySelective(config);
         }
         return result;
+    }
+
+    public List<Map<String, String>> initConfigTypes() {
+        List<Map<String, String>> maps = configMapper.initConfigTypes();
+        log.info("initConfigTypes...{}", JSONObject.toJSONString(maps));
+        return maps;
     }
 }

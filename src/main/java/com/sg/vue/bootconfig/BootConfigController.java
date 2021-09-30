@@ -17,8 +17,8 @@ public class BootConfigController {
     @Resource
     BootConfigServiceImpl configService;
 
-    @PostMapping("/queryConfigByType")
-    public ResponseResult queryConfigBuType(@RequestBody BootConfig config) {
+    @PostMapping("/queryConfigListByType")
+    public ResponseResult queryConfigListByType(@RequestBody BootConfig config) {
         return ResponseResult.success(configService.queryConfigBuType(config));
     }
 
@@ -30,5 +30,10 @@ public class BootConfigController {
     @PostMapping("/refreshCache")
     public ResponseResult refreshCache(@RequestBody BootConfig config) {
         return  configService.refreshCache(config) ;
+    }
+
+    @PostMapping("/initConfigTypes")
+    public ResponseResult initConfigTypes() {
+        return ResponseResult.success(configService.initConfigTypes());
     }
 }
