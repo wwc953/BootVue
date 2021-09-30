@@ -1,15 +1,19 @@
 package com.sg.vue.bootconfig;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sg.vue.cache.CaffeineCache;
 import com.sg.vue.converter.ResponseResult;
 import com.sg.vue.utils.BootCodes;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BootConfigServiceImpl {
 
@@ -45,5 +49,21 @@ public class BootConfigServiceImpl {
         BootConfig config = list.get(0);
         caffeineCache.hset(BootCodes.config_cach_key, config.getConfigType(), config.getConfigValue());
         return ResponseResult.success();
+    }
+
+    public Integer saveConfig(BootConfig config) {
+        Integer result;
+        Date date = new Date();
+        if (config.getId() == null) {
+            config.setCreateTime(date);
+            config.setUpdateTime(date);
+            log.info("添加配置:{}", JSONObject.toJSONString(config));
+            result = configMapper.insertSelective(config);
+        } else {
+            log.info("更新配置:{}", JSONObject.toJSONString(config));
+            config.setUpdateTime(date);
+            result = configMapper.updateByPrimaryKeySelective(config);
+        }
+        return result;
     }
 }

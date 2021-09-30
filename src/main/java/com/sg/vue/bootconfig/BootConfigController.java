@@ -22,6 +22,11 @@ public class BootConfigController {
         return ResponseResult.success(configService.queryConfigBuType(config));
     }
 
+    @PostMapping("/saveConfig")
+    public ResponseResult saveConfig(@RequestBody BootConfig config) {
+        return ResponseResult.success(configService.saveConfig(config));
+    }
+
     @PostMapping("/refreshCache")
     public ResponseResult refreshCache(@RequestBody BootConfig config) {
         return  configService.refreshCache(config) ;
