@@ -6,13 +6,14 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="config_type" property="configType" jdbcType="VARCHAR" />
     <result column="config_value" property="configValue" jdbcType="VARCHAR" />
+    <result column="value_des" property="valueDes" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="flag" property="flag" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, config_type, config_value, create_time, update_time, flag
+    id, config_type, config_value, create_time, update_time, flag,value_des
   </sql>
 
   <select id="selectConfig" resultMap="BaseResultMap" parameterType="com.sg.vue.bootconfig.BootConfig" >
@@ -34,7 +35,7 @@
 
 
   <select id="initConfigTypes" resultType="java.util.Map">
-    select distinct config_type "value",des "label" from boot_config
+    select distinct config_type "value",type_des "label" from boot_config
   </select>
 
   <insert id="insertSelective" parameterType="com.sg.vue.bootconfig.BootConfig" >

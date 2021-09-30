@@ -17,7 +17,7 @@
     <select id="queryPeople" resultMap="BaseResultMap" parameterType="com.sg.vue.user.model.People">
         select
         <include refid="Base_Column_List"/>
-        from people
+        from boot_user
         <where>
             <if test="id != null">
              and id = #{id,jdbcType=INTEGER}
@@ -36,15 +36,15 @@
     <select id="queryUserList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from people where flag='01'
+        from boot_user where flag='01'
     </select>
 
     <select id="queryUserListCount" resultType="java.lang.Long">
-        select count(1) from people where flag='01'
+        select count(1) from boot_user where flag='01'
     </select>
 
     <insert id="insert" parameterType="com.sg.vue.user.model.People">
-        insert into people (id, name, age,
+        insert into boot_user (id, name, age,
                             address, create_time, update_time,
                             flag)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
@@ -53,7 +53,7 @@
     </insert>
 
     <insert id="insertSelective" parameterType="com.sg.vue.user.model.People">
-        insert into people
+        insert into boot_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -102,7 +102,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.sg.vue.user.model.People">
-        update people
+        update boot_user
         <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},

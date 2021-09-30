@@ -94,13 +94,7 @@
 <!--               selectByExampleQueryId="false">-->
 <!--        </table>-->
 
-<!--        <table tableName="my_user" domainObjectName="MyUser"-->
-<!--               enableCountByExample="false" enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false" enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false">-->
-<!--        </table>-->
-
-        <table tableName="people" domainObjectName="People"
+        <table tableName="boot_config" domainObjectName="BootConfig"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

@@ -25,7 +25,9 @@ public class BootConfigServiceImpl {
     BootConfigMapper configMapper;
 
     public List<BootConfig> queryConfigBuType(BootConfig config) {
-        return configMapper.selectConfig(config);
+        List<BootConfig> bootConfigs = configMapper.selectConfig(config);
+        log.info("queryConfigBuType..{}",JSONObject.toJSONString(bootConfigs));
+        return bootConfigs;
     }
 
     /**
