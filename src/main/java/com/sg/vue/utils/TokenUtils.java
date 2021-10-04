@@ -7,13 +7,15 @@ import java.util.UUID;
  */
 public class TokenUtils {
 
+    public static String TOKEN_FLAG = "vueboot";
+
     /**
      * 获取token
      *
      * @return
      */
-    public static String getToken()   {
-        String token = UUID.randomUUID().toString().replace("-", "") + "-vueboot";
+    public static String getToken() {
+        String token = UUID.randomUUID().toString().replace("-", "") + "-" + TOKEN_FLAG;
         try {
             return AesUtil.encrypt(token, "token");
         } catch (Exception e) {
@@ -35,7 +37,7 @@ public class TokenUtils {
         }
         String decryptstr = AesUtil.decrypt(token, "token");
         String flag = decryptstr.split("-")[1];
-        return "vueboot".equalsIgnoreCase(flag);
+        return TOKEN_FLAG.equalsIgnoreCase(flag);
     }
 
 }
