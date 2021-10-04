@@ -8,6 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
+/**
+ * 登录权限控制
+ */
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
 

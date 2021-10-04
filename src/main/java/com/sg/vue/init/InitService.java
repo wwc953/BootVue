@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+/**
+ * 启动配置文件本地缓存
+ */
 @Slf4j
 @Component
 public class InitService implements ApplicationListener<ApplicationStartedEvent> {
