@@ -20,6 +20,7 @@ public class InitService implements ApplicationListener<ApplicationStartedEvent>
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
+        log.info("init local cache....");
         configService.reflushAllConfigCache();
     }
 }

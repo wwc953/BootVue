@@ -51,8 +51,8 @@ public class RSAUtil {
     private static final String CODE_FORMATE_UTF8 = "UTF-8";
 
     // - - - - - - - - - - - - - - - - - - - - RSA 生成秘钥对 - - - - - - - - - - - - - - - - - - - - //
-    public  static String DEFAUT_PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkieMb0EntYotTUNt9ZyusU4mh3GW9k4lL4q42aNDS6aVN//55EnM45CrUC5qjW2zfEqrFLNPGwONueYGmDoVySXmS4Uy0enhnJSWqLRlLhiIr3oVHzPUZQ1v/cGultMSepCVsQmJ5z+LhcYt7UfVAh8dEpMg81Rthtf1V2RgtyAXe3JJjl8b24VG2lwkD8oJCp2fJpwOnhMbKPe/t5XEgUb++XAw5CZxN3fMRyuMz3+3GMeUrQOfatXpnX4RxUPY0tt3X7Y249ICbOG4QdVyG89wdATilECh/Y3DTyg61k8DDfs2zEUwPPURx0XbBAUNaiVHJcTSkKdxb7GgDIXi1wIDAQAB";
-    public  static String DEFAUT_PrivateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCSJ4xvQSe1ii1NQ231nK6xTiaHcZb2TiUvirjZo0NLppU3//nkSczjkKtQLmqNbbN8SqsUs08bA4255gaYOhXJJeZLhTLR6eGclJaotGUuGIivehUfM9RlDW/9wa6W0xJ6kJWxCYnnP4uFxi3tR9UCHx0SkyDzVG2G1/VXZGC3IBd7ckmOXxvbhUbaXCQPygkKnZ8mnA6eExso97+3lcSBRv75cDDkJnE3d8xHK4zPf7cYx5StA59q1emdfhHFQ9jS23dftjbj0gJs4bhB1XIbz3B0BOKUQKH9jcNPKDrWTwMN+zbMRTA89RHHRdsEBQ1qJUclxNKQp3FvsaAMheLXAgMBAAECggEAcpQSon2f1dBXp4S/RZfp1BKCXhiM0td8i4LjW6uEbGBSBy7kBzZcK+MUiq141xszZLNc38OatoDYsO5GKT0QKztNCdOIfcwvFQPgAK47zCFrtrWsrWOClR4tt/AJITCkAfYrhDkIJYRJqzwscSKpORqPPiqd4GVF4DqZmkOVFroc4gJ2DhU5kkwZoUx40MgPtelds/Hf3EAXAGY7nPcOuGRcH8PofN/PoRJaXcLteiovUm3C+JSyaEx63ataFJdj6EnLjHx8vzbf1HHFq6KQYIFBu/SaVBQpiUHOLJz84MXr9BmBYVOOH0nFKTdoCOlGjR84RPog6SqA/JKF124IYQKBgQDiZQ1JkkUm+YSo4WXB6y5gPZ/SZraxOSPzwFKBGfuE2I9VJwgFnERf0WIunkLkkYgcRJiTzatxxLSysjWTMclARrdaUXCMoiFqeO9a4/gpaI+zTmWxrVCrmWDh0PHBIiCQoc3aEaXTZ2e7QSKTG7zyf0SGSb7zGbPLNKBISmDm/wKBgQClRFFylWl4y+5H/AVzTpuOqWjjsXpq6BvArGnpKq3An5qNT3ZEzuHbLs6EDuhhyBQoeSyxxpUKsgs8MKQWVrkGvvS1iMQeiKo6/94GXLKAriN51bzldgHsBTBXdfc1OR2DH9hj5mAvXjeu+0SMiYO7BNa9v9GqO7XsVOZ/60McKQKBgC+hSvZbi6jzffF52kq+C/e7f1Bow67tcp7pq3H14XDFjwI/P/TON6RhDOL58ODdrWElHWSbNKKu28VssNDS/KBFQHYEBEXSJm2cG99nbuJnWTREHikPaZVwo21e5D3ZzDghkol6hQTBEJXY0klY4Ju0ItqN0Vqb4bOy0rXi0BhJAoGANWzqb4JBgF1cgETGdkoZG3tEfybmjhzOq/CQpGG5naV6zue7Me83MCXneOVg1gtaCONzQV0S3UxFOYX35YjPc5DThsPZso03iq8gVSouQk8JBN/FmuAVKvlacUufSMNX+QWYbGMTAP0SPyzXMh9aSGD+EoUqAEAhRW8EvKGPJlECgYEAnvAVwqZnFXCwSGvDVdGlppbRT9WMNtaeEb32XU7fQstU7dtyYXoaw2nEC0lq5UoCS33ylt74GJX5/z7QPP+hbX2SwCzY7GdmpQCivAIo7JP6+VElKn3bqBxxGbJ2346V4SqOf843y8Fsxc12MffsGQMKx/pNw3tJ3Sn6OR7BgvQ=";
+    public static String DEFAUT_PublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkieMb0EntYotTUNt9ZyusU4mh3GW9k4lL4q42aNDS6aVN//55EnM45CrUC5qjW2zfEqrFLNPGwONueYGmDoVySXmS4Uy0enhnJSWqLRlLhiIr3oVHzPUZQ1v/cGultMSepCVsQmJ5z+LhcYt7UfVAh8dEpMg81Rthtf1V2RgtyAXe3JJjl8b24VG2lwkD8oJCp2fJpwOnhMbKPe/t5XEgUb++XAw5CZxN3fMRyuMz3+3GMeUrQOfatXpnX4RxUPY0tt3X7Y249ICbOG4QdVyG89wdATilECh/Y3DTyg61k8DDfs2zEUwPPURx0XbBAUNaiVHJcTSkKdxb7GgDIXi1wIDAQAB";
+    public static String DEFAUT_PrivateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCSJ4xvQSe1ii1NQ231nK6xTiaHcZb2TiUvirjZo0NLppU3//nkSczjkKtQLmqNbbN8SqsUs08bA4255gaYOhXJJeZLhTLR6eGclJaotGUuGIivehUfM9RlDW/9wa6W0xJ6kJWxCYnnP4uFxi3tR9UCHx0SkyDzVG2G1/VXZGC3IBd7ckmOXxvbhUbaXCQPygkKnZ8mnA6eExso97+3lcSBRv75cDDkJnE3d8xHK4zPf7cYx5StA59q1emdfhHFQ9jS23dftjbj0gJs4bhB1XIbz3B0BOKUQKH9jcNPKDrWTwMN+zbMRTA89RHHRdsEBQ1qJUclxNKQp3FvsaAMheLXAgMBAAECggEAcpQSon2f1dBXp4S/RZfp1BKCXhiM0td8i4LjW6uEbGBSBy7kBzZcK+MUiq141xszZLNc38OatoDYsO5GKT0QKztNCdOIfcwvFQPgAK47zCFrtrWsrWOClR4tt/AJITCkAfYrhDkIJYRJqzwscSKpORqPPiqd4GVF4DqZmkOVFroc4gJ2DhU5kkwZoUx40MgPtelds/Hf3EAXAGY7nPcOuGRcH8PofN/PoRJaXcLteiovUm3C+JSyaEx63ataFJdj6EnLjHx8vzbf1HHFq6KQYIFBu/SaVBQpiUHOLJz84MXr9BmBYVOOH0nFKTdoCOlGjR84RPog6SqA/JKF124IYQKBgQDiZQ1JkkUm+YSo4WXB6y5gPZ/SZraxOSPzwFKBGfuE2I9VJwgFnERf0WIunkLkkYgcRJiTzatxxLSysjWTMclARrdaUXCMoiFqeO9a4/gpaI+zTmWxrVCrmWDh0PHBIiCQoc3aEaXTZ2e7QSKTG7zyf0SGSb7zGbPLNKBISmDm/wKBgQClRFFylWl4y+5H/AVzTpuOqWjjsXpq6BvArGnpKq3An5qNT3ZEzuHbLs6EDuhhyBQoeSyxxpUKsgs8MKQWVrkGvvS1iMQeiKo6/94GXLKAriN51bzldgHsBTBXdfc1OR2DH9hj5mAvXjeu+0SMiYO7BNa9v9GqO7XsVOZ/60McKQKBgC+hSvZbi6jzffF52kq+C/e7f1Bow67tcp7pq3H14XDFjwI/P/TON6RhDOL58ODdrWElHWSbNKKu28VssNDS/KBFQHYEBEXSJm2cG99nbuJnWTREHikPaZVwo21e5D3ZzDghkol6hQTBEJXY0klY4Ju0ItqN0Vqb4bOy0rXi0BhJAoGANWzqb4JBgF1cgETGdkoZG3tEfybmjhzOq/CQpGG5naV6zue7Me83MCXneOVg1gtaCONzQV0S3UxFOYX35YjPc5DThsPZso03iq8gVSouQk8JBN/FmuAVKvlacUufSMNX+QWYbGMTAP0SPyzXMh9aSGD+EoUqAEAhRW8EvKGPJlECgYEAnvAVwqZnFXCwSGvDVdGlppbRT9WMNtaeEb32XU7fQstU7dtyYXoaw2nEC0lq5UoCS33ylt74GJX5/z7QPP+hbX2SwCzY7GdmpQCivAIo7JP6+VElKn3bqBxxGbJ2346V4SqOf843y8Fsxc12MffsGQMKx/pNw3tJ3Sn6OR7BgvQ=";
 
     /**
      * 生成密钥对：Base64 转码的字符串
@@ -260,10 +260,17 @@ public class RSAUtil {
     public static void main(String[] args) throws Exception {
 //        Map<String, String> stringStringMap = initKeyBase64Str();
         String word = "第三方个梵蒂冈";
-        String key =encrypt(word,  DEFAUT_PublicKey);
-        System.out.println(key);
-        String key1 = decrypt(key,  DEFAUT_PrivateKey);
-        System.out.println(key1);
+//        String key =encrypt(word,  DEFAUT_PublicKey);
+//        System.out.println(key);
+//        String key1 = decrypt(key,  DEFAUT_PrivateKey);
+//        System.out.println(key1);
+
+//        //验签
+//        String sign = doSign(word, DEFAUT_PrivateKey, "utf-8");
+//        System.out.println("加签:" + sign);
+//        //验签
+//        boolean b = doCheck(word, sign, getPublicKey(DEFAUT_PublicKey), "utf-8");
+//        System.out.println("验签结果：" + b);
     }
 
 }
