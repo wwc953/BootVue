@@ -1,4 +1,4 @@
-package com.sg.vue.user.dao;
+package com.sg.vue.dao;
 
 import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;

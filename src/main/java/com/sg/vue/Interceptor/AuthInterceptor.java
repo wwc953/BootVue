@@ -5,12 +5,10 @@ import com.sg.vue.converter.ResponseResult;
 import com.sg.vue.utils.BootCodes;
 import com.sg.vue.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 /**
  * 拦截器，判断用户是否登录，token是否为空

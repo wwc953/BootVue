@@ -6,7 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;
-import com.sg.vue.user.dao.PeopleMapper;
+import com.sg.vue.dao.PeopleMapper;
 import com.sg.vue.utils.RSAUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

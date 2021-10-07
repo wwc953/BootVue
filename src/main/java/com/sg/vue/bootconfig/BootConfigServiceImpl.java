@@ -3,6 +3,7 @@ package com.sg.vue.bootconfig;
 import com.alibaba.fastjson.JSONObject;
 import com.sg.vue.cache.CaffeineCache;
 import com.sg.vue.converter.ResponseResult;
+import com.sg.vue.dao.BootConfigMapper;
 import com.sg.vue.utils.BootCodes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;

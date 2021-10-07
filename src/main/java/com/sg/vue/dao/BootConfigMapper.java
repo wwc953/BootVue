@@ -1,5 +1,6 @@
-package com.sg.vue.bootconfig;
+package com.sg.vue.dao;
 
+import com.sg.vue.bootconfig.BootConfig;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

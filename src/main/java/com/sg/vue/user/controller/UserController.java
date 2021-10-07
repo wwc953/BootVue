@@ -2,6 +2,7 @@ package com.sg.vue.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sg.vue.converter.ResponseResult;
+import com.sg.vue.role.BootRoleServer;
 import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;
 import com.sg.vue.user.service.UserServiceImpl;
@@ -19,6 +20,9 @@ public class UserController {
 
     @Resource
     UserServiceImpl userService;
+
+    @Resource
+    BootRoleServer roleServer;
 
     @PostMapping("/queryUserList")
     public ResponseResult queryUserList(@RequestBody PeopleQueryAO queryAO) {
@@ -44,6 +48,7 @@ public class UserController {
         }
         result.put("userInfo", userinfo);
         result.put("token", TokenUtils.getToken());
+        result.put("role", roleServer.selectRoleByUserId(userinfo.getId()));
         return ResponseResult.success(result);
     }
 
