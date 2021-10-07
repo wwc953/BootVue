@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sg.vue.cache.CaffeineCache;
 import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;
 import com.sg.vue.dao.PeopleMapper;
+import com.sg.vue.utils.BootCodes;
 import com.sg.vue.utils.RSAUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class UserServiceImpl {
     @Resource
     PeopleMapper peopleMapper;
 
+    @Resource
+    CaffeineCache caffeineCache;
+
     public List<People> queryUserList(PeopleQueryAO queryAO) {
         Page<Object> page = PageHelper.startPage(queryAO.getPageNo(), queryAO.getPageSize());
         return peopleMapper.queryUserList();
@@ -38,9 +43,10 @@ public class UserServiceImpl {
         log.info("login...{}", JSONObject.toJSONString(people));
         try {
             String decrypt = RSAUtil.decrypt(people.getPassword(), RSAUtil.DEFAUT_PrivateKey);
-            String md5DigestAsHex = DigestUtils.md5DigestAsHex(decrypt.getBytes());
-            log.info("md5DigestAsHex....{}",md5DigestAsHex);
-            people.setPassword(md5DigestAsHex);
+            if ("true".equalsIgnoreCase(String.valueOf(caffeineCache.hget(BootCodes.config_cach_key, "user_pwd_md5_enc")))) {
+                decrypt = DigestUtils.md5DigestAsHex(decrypt.getBytes());
+            }
+            people.setPassword(decrypt);
         } catch (Exception e) {
             log.error("用户密码解密失败");
         }

@@ -27,7 +27,7 @@ public class BootConfigServiceImpl {
 
     public List<BootConfig> queryConfigBuType(BootConfig config) {
         List<BootConfig> bootConfigs = configMapper.selectConfig(config);
-        log.info("queryConfigBuType..{}",JSONObject.toJSONString(bootConfigs));
+        log.info("queryConfigBuType..{}", JSONObject.toJSONString(bootConfigs));
         return bootConfigs;
     }
 
@@ -48,10 +48,11 @@ public class BootConfigServiceImpl {
         if (StringUtils.isBlank(param.getConfigType())) {
             return ResponseResult.fail(BootCodes.errorcode, "type为空");
         }
+        caffeineCache.hdel(BootCodes.config_cach_key, param.getConfigType());
         param.setFlag("01");
         List<BootConfig> list = configMapper.selectConfig(param);
-        if (CollectionUtils.isEmpty(list) || list.size() > 1) {
-            return ResponseResult.fail(BootCodes.errorcode, "有效值个数有误!");
+        if (CollectionUtils.isEmpty(list)) {
+            ResponseResult.success();
         }
         BootConfig config = list.get(0);
         caffeineCache.hset(BootCodes.config_cach_key, config.getConfigType(), config.getConfigValue());
@@ -71,6 +72,7 @@ public class BootConfigServiceImpl {
             config.setUpdateTime(date);
             result = configMapper.updateByPrimaryKeySelective(config);
         }
+        refreshCache(config);
         return result;
     }
 
