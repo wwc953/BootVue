@@ -1,8 +1,10 @@
 package com.sg.vue.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sg.vue.cache.CaffeineCache;
 import com.sg.vue.converter.ResponseResult;
 import com.sg.vue.role.BootRoleServer;
+import com.sg.vue.role.model.BootRoleResultVO;
 import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;
 import com.sg.vue.user.service.UserServiceImpl;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -23,6 +26,9 @@ public class UserController {
 
     @Resource
     BootRoleServer roleServer;
+
+    @Resource
+    CaffeineCache caffeineCache;
 
     @PostMapping("/queryUserList")
     public ResponseResult queryUserList(@RequestBody PeopleQueryAO queryAO) {
@@ -47,8 +53,11 @@ public class UserController {
             return ResponseResult.fail(BootCodes.errorcode, "用户名、密码错误！！！");
         }
         result.put("userInfo", userinfo);
-        result.put("token", TokenUtils.getToken());
-        result.put("role", roleServer.selectRoleByUserId(userinfo.getId()));
+        String token = TokenUtils.getToken();
+        List<BootRoleResultVO> bootRoleResultVOS = roleServer.selectRoleByUserId(userinfo.getId());
+        result.put("token", token);
+        result.put("role", bootRoleResultVOS);
+        caffeineCache.hset("localtoken", token, bootRoleResultVOS);
         return ResponseResult.success(result);
     }
 

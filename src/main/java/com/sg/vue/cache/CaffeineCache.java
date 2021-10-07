@@ -2,6 +2,7 @@ package com.sg.vue.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.*;
 
@@ -41,6 +42,9 @@ public class CaffeineCache {
 
     public Object hget(String key, String item) {
         Object value = baseCache.getIfPresent(key);
+        if (value == null) {
+            return null;
+        }
         return ((Map) value).get(item);
     }
 

@@ -94,7 +94,7 @@
 <!--               selectByExampleQueryId="false">-->
 <!--        </table>-->
 
-        <table tableName="boot_config" domainObjectName="BootConfig"
+        <table tableName="boot_role" domainObjectName="BootRole"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
