@@ -21,7 +21,8 @@
   <select id="selectRoleByUserId" resultType="com.sg.vue.role.model.BootRoleResultVO" parameterType="java.lang.Integer" >
     SELECT
       c.id "urlId",
-      c.config_value "urlValue"
+      c.config_value "urlValue",
+      c.value_des "urlDes"
     FROM
       boot_role r
         JOIN boot_config c ON r.url_id = c.id

@@ -56,7 +56,7 @@ public class UserController {
         String token = TokenUtils.getToken();
         List<BootRoleResultVO> bootRoleResultVOS = roleServer.selectRoleByUserId(userinfo.getId());
         result.put("token", token);
-        result.put("role", bootRoleResultVOS);
+        result.put("urlListData", bootRoleResultVOS);
         caffeineCache.hset("localtoken", token, bootRoleResultVOS);
         return ResponseResult.success(result);
     }
