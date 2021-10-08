@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface BootRoleMapper {
-    int deleteByPrimaryKey(Integer roleId);
+    int delete(BootRole record);
 
     int insertSelective(BootRole record);
 
@@ -22,5 +22,6 @@ public interface BootRoleMapper {
     List<BootRoleResultVO> selectRoleByUserId(Integer userId);
 
     int updateByPrimaryKeySelective(BootRole record);
+
 
 }

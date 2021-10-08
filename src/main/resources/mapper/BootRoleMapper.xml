@@ -30,9 +30,13 @@
     where r.user_id = #{userId,jdbcType=INTEGER}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="delete" parameterType="com.sg.vue.role.BootRole" >
     delete from boot_role
-    where role_id = #{roleId,jdbcType=INTEGER}
+    <where>
+      <if test="roleId!=null">role_id = #{roleId,jdbcType=INTEGER}</if>
+      <if test="userId!=null">user_id = #{userId,jdbcType=INTEGER}</if>
+    </where>
+
   </delete>
 
   <insert id="insertSelective" parameterType="com.sg.vue.role.BootRole" >
