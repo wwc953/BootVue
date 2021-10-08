@@ -9,6 +9,7 @@ import com.sg.vue.user.model.PeopleQueryAO;
 import com.sg.vue.user.model.People;
 import com.sg.vue.user.service.UserServiceImpl;
 import com.sg.vue.utils.BootCodes;
+import com.sg.vue.utils.RSAUtil;
 import com.sg.vue.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +47,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseResult login(@RequestBody People people) {
+    public ResponseResult login(@RequestBody People people) throws Exception {
         JSONObject result = new JSONObject();
         People userinfo = userService.queryPeople(people);
         if (userinfo == null) {
             return ResponseResult.fail(BootCodes.errorcode, "用户名、密码错误！！！");
         }
+//        result.put("userInfo", RSAUtil.encrypt(JSONObject.toJSONString(userinfo), RSAUtil.DEFAUT_PublicKey));
         result.put("userInfo", userinfo);
         String token = TokenUtils.getToken();
         List<BootRoleResultVO> bootRoleResultVOS = roleServer.selectRoleByUserId(userinfo.getId());

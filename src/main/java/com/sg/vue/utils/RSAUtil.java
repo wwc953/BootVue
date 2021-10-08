@@ -257,6 +257,16 @@ public class RSAUtil {
         return false;
     }
 
+    public static boolean doCheck(String content, String signed, String publicKey, String encode) {
+        try {
+            return doCheck(content, signed, getPublicKey(publicKey), encode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("报文验证签名出现异常");
+        }
+        return false;
+    }
+
     public static void main(String[] args) throws Exception {
 //        Map<String, String> stringStringMap = initKeyBase64Str();
         String word = "第三方个梵蒂冈";
@@ -269,7 +279,7 @@ public class RSAUtil {
 //        String sign = doSign(word, DEFAUT_PrivateKey, "utf-8");
 //        System.out.println("加签:" + sign);
 //        //验签
-//        boolean b = doCheck(word, sign, getPublicKey(DEFAUT_PublicKey), "utf-8");
+//        boolean b = doCheck(word, sign, DEFAUT_PublicKey, "utf-8");
 //        System.out.println("验签结果：" + b);
     }
 
