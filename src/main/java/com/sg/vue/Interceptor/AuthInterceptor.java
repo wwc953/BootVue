@@ -7,6 +7,7 @@ import com.sg.vue.exception.CheckTokenException;
 import com.sg.vue.utils.BootCodes;
 import com.sg.vue.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.annotation.Resource;
@@ -24,11 +25,18 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Resource
     CaffeineCache caffeineCache;
 
+    @Value("${open.token:false}")
+    private String openToken;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=utf-8");
         String token = request.getHeader("token");
+        if (!"true".equalsIgnoreCase(openToken)) {
+            return true;
+        }
+
         boolean b = false;
         try {
             b = TokenUtils.checkToken(token);
