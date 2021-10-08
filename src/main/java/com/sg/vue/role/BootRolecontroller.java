@@ -31,6 +31,6 @@ public class BootRolecontroller {
 
     @PostMapping("/saveRoles")
     public ResponseResult saveRoles(@RequestBody SaveUserRoleAO ao) {
-        return ResponseResult.success(roleServer.saveUserRole(ao));
+        return roleServer.saveUserRole(ao);
     }
 }

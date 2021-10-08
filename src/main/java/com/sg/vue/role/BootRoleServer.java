@@ -62,9 +62,9 @@ public class BootRoleServer {
         return ResponseResult.success(resultList);
     }
 
-    public Integer saveUserRole(SaveUserRoleAO ao) {
+    public ResponseResult saveUserRole(SaveUserRoleAO ao) {
         if (ao.getCurrentUserId() == null) {
-            throw new RuntimeException("userId为空");
+            return ResponseResult.fail(BootCodes.errorcode, "userId为空");
         }
         BootRole del = new BootRole();
         del.setUserId(ao.getCurrentUserId());
@@ -77,6 +77,6 @@ public class BootRoleServer {
             roleMapper.insertSelective(role);
         }
 
-        return 1;
+        return ResponseResult.success(1);
     }
 }
