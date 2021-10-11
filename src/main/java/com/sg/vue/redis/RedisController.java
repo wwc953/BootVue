@@ -1,14 +1,12 @@
 package com.sg.vue.redis;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
+import com.sg.vue.utils.JsonUtil;
+import com.sg.vue.websocket.SendDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,8 +24,6 @@ public class RedisController {
     @Autowired(required = false)
     ChannelTopic webMsgChannelTopic;
 
-    @Autowired(required = false)
-    ChannelTopic webMsgChannelTopic2;
 
     @GetMapping(value = "/sendTopic/{message}")
     public String sendTopic(@PathVariable String message) {
@@ -42,16 +38,13 @@ public class RedisController {
         return "send1 success";
     }
 
-    @GetMapping(value = "/sendTopic2/{message}")
-    public String sendTopic2(@PathVariable String message) {
+    @PostMapping(value = "/sendWebMsg")
+    public SendDTO sendWebMsg(@RequestBody SendDTO sendDTO) {
         String messageId = String.valueOf(UUID.randomUUID()).replace("-","");
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        Map<String, String> params = new HashMap<>();
-//        JSONObject params = new JSONObject();
-        params.put("messageId", messageId);
-        params.put("messageData", message);
-        params.put("createTime", createTime);
-        redisTemplate.convertAndSend(webMsgChannelTopic2.getTopic(), JSONObject.toJSONString(params));
-        return "send2 success";
+        sendDTO.setSendTime(createTime);
+        sendDTO.setMsgID(messageId);
+        redisTemplate.convertAndSend(webMsgChannelTopic.getTopic(), JsonUtil.convertObjectToJson(sendDTO));
+        return sendDTO;
     }
 }

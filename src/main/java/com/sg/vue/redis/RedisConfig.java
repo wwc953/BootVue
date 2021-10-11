@@ -71,8 +71,12 @@ public class RedisConfig {
 
     @Bean
     public MessageListenerAdapter webMsgRedisSubListener(){
-        return new WebMsgListener();
-    }@Bean
+        WebMsgListener webMsgListener = new WebMsgListener();
+        webMsgListener.setSerializer(new GenericJackson2JsonRedisSerializer());
+        return webMsgListener;
+    }
+
+    @Bean
     public MessageListenerAdapter redisSubListener(){
         return new RedisSubListener();
     }
