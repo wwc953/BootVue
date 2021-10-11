@@ -13,20 +13,8 @@ public class SendDTO  implements Serializable {
     private String msgContent;
     private String sendTime;
     private String sendRecID;
-
-    public SendDTO() {
-    }
-
-//    public SendDTO(String receiver, String sender, String senderName, String title, String msgID, String msgContent, String sendTime, String sendRecID) {
-//        this.receiver = receiver;
-//        this.sender = sender;
-//        this.senderName = senderName;
-//        this.title = title;
-//        this.msgID = msgID;
-//        this.msgContent = msgContent;
-//        this.sendTime = sendTime;
-//        this.sendRecID = sendRecID;
-//    }
+    //发送类型: 单点，广播
+    private String sendType;
 
     public String getReceiver() {
         return receiver;
@@ -90,5 +78,13 @@ public class SendDTO  implements Serializable {
 
     public void setSendRecID(String sendRecID) {
         this.sendRecID = sendRecID;
+    }
+
+    public String getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(String sendType) {
+        this.sendType = sendType;
     }
 }

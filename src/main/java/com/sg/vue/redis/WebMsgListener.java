@@ -24,7 +24,12 @@ public class WebMsgListener extends MessageListenerAdapter {
         String msgString = new String(message.getBody());
         SendDTO sendDTO = JsonUtil.convertJsonToObject(msgString, new TypeReference<SendDTO>() {
         });
-        webSocketServer.sendOneMessage(sendDTO.getReceiver(), JsonUtil.convertObjectToJson(sendDTO));
+        if ("topic".equalsIgnoreCase(sendDTO.getSendType())) {
+            webSocketServer.sendAllMessage(JsonUtil.convertObjectToJson(sendDTO));
+        } else {
+            webSocketServer.sendOneMessage(sendDTO.getReceiver(), JsonUtil.convertObjectToJson(sendDTO));
+        }
+
     }
 
 }
