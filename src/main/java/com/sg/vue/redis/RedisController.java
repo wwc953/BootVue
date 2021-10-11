@@ -1,6 +1,8 @@
 package com.sg.vue.redis;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.sg.vue.utils.JsonUtil;
 import com.sg.vue.websocket.SendDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class RedisController {
 
     @GetMapping(value = "/sendTopic/{message}")
     public String sendTopic(@PathVariable String message) {
-        String messageId = String.valueOf(UUID.randomUUID()).replace("-","");
+        String messageId = String.valueOf(UUID.randomUUID()).replace("-", "");
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Map<String, String> params = new HashMap<>();
 //        JSONObject params = new JSONObject();
@@ -40,11 +42,11 @@ public class RedisController {
 
     @PostMapping(value = "/sendWebMsg")
     public SendDTO sendWebMsg(@RequestBody SendDTO sendDTO) {
-        String messageId = String.valueOf(UUID.randomUUID()).replace("-","");
+        String messageId = String.valueOf(UUID.randomUUID()).replace("-", "");
         String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         sendDTO.setSendTime(createTime);
         sendDTO.setMsgID(messageId);
-        redisTemplate.convertAndSend(webMsgChannelTopic.getTopic(), JsonUtil.convertObjectToJson(sendDTO));
+        redisTemplate.convertAndSend(webMsgChannelTopic.getTopic(), sendDTO);
         return sendDTO;
     }
 }

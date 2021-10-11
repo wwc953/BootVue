@@ -22,16 +22,16 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
     @Bean
-    public RedisTemplate<String, Object> getRedisTemplate(RedisConnectionFactory redisConnectionFactory){
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<String, Object>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         //取消使用默认序列化方式
         redisTemplate.setEnableDefaultSerializer(true);
 
-        ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer(om);
+//        ObjectMapper om = new ObjectMapper();
+//        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+//        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
 
         // 设置value的序列化规则和 key的序列化规则

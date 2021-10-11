@@ -1,6 +1,8 @@
 package com.sg.vue.websocket;
 
-public class SendDTO   {
+import java.io.Serializable;
+
+public class SendDTO  implements Serializable {
     //接收人
     private String receiver;
     //发送人
@@ -11,6 +13,20 @@ public class SendDTO   {
     private String msgContent;
     private String sendTime;
     private String sendRecID;
+
+    public SendDTO() {
+    }
+
+//    public SendDTO(String receiver, String sender, String senderName, String title, String msgID, String msgContent, String sendTime, String sendRecID) {
+//        this.receiver = receiver;
+//        this.sender = sender;
+//        this.senderName = senderName;
+//        this.title = title;
+//        this.msgID = msgID;
+//        this.msgContent = msgContent;
+//        this.sendTime = sendTime;
+//        this.sendRecID = sendRecID;
+//    }
 
     public String getReceiver() {
         return receiver;
