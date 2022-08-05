@@ -3,6 +3,7 @@ package com.sg.vue.service;
 import com.sg.vue.converter.ResponseResult;
 import com.sg.vue.model.ao.MailDTO;
 import com.sun.mail.util.MailSSLSocketFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class MailService {
     String sendMail;
 
     public ResponseResult<String> sendMail(MailDTO mailDTO) {
+        if (StringUtils.isBlank(sqm) || StringUtils.isBlank(sendMail)) {
+            return ResponseResult.fail("-1", "请检查配置,授权码或发送方邮箱地址为空");
+        }
         Properties properties = new Properties();
         //设置QQ邮件服务器
         properties.setProperty("mail.host", "smtp.qq.com");
