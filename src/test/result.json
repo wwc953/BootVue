@@ -1,13 +1,42 @@
 {
-  "batchedReduceSize": 512,
-  "ccsMinimizeRoundtrips": true,
-  "description": "",
-  "maxConcurrentShardRequests": 5,
-  "parentTask": {
-    "id": -1,
-    "nodeId": "",
-    "set": false
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "name_analyzer",
+        // 查询条件按空格分词，以实现需求3
+        "search_analyzer": "whitespace"
+      }
+    }
   },
-  "shouldStoreResult": false,
-  "suggestOnly": false
+  "settings": {
+    // 此值应>= 下面的ngram_filter中的max_gram减min_gram的值
+    "max_ngram_diff": 50,
+    "analysis": {
+      "filter": {
+        "ngram_filter": {
+          "type": "ngram",
+          // 任意位置分词，步长最短为1，最长为50，最长值视具体需求而定，可自行修改(需考虑ES存储成本)
+          // 详情见参考文章[ElasticSearch一看就懂之分词器edge_ngram和ngram的区别]
+          "min_gram": "1",
+          "max_gram": "50"
+        }
+      },
+      "analyzer": {
+        "name_analyzer": {
+          "filter": [
+            "asciifolding",
+            "lowercase",
+            //从任意位置开始分词，这是实现模糊查询的关键
+            "ngram_filter"
+          ],
+          // 原始数据按空格分词
+          "tokenizer": "whitespace"
+        }
+      }
+    }
+  }
 }
